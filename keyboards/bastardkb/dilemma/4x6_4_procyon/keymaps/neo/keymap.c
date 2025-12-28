@@ -26,7 +26,7 @@ enum dilemma_keymap_layers {
 };
 
 // Automatically enable sniping-mode on the pointer layer.
-// #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
+#define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_LOWER // mouse control layer
 
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
