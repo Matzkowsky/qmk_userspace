@@ -31,7 +31,7 @@ enum dilemma_keymap_layers {
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
 #define MT_CT_Z MT(MOD_LCTL, KC_Z)
-#define MT_SF_V MT(MOD_LSFT, KC_B)
+#define MT_SF_V MT(MOD_LSFT, KC_V)
 #define MT_RALE MT(MOD_LALT | MOD_RALT, KC_ENT)
 #define LT_LO_S LT(1, KC_SPC)
 #define LT_RA_B LT(2, KC_B)
