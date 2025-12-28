@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+//#include "quantum.h"
 // see also bastard-qmk/quantum/keycodes.h
 
 enum dilemma_keymap_layers {
@@ -69,11 +70,13 @@ enum dilemma_keymap_layers {
 #    define SNIPING KC_NO
 #endif // !POINTING_DEVICE_ENABLE
 
+#define DUAL_FUNC_0 LT(9, KC_ESC)
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,
+       DUAL_FUNC_0,KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -128,6 +131,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 // clang-format on
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case QK_MODS ... QK_MODS_MAX:
+            // Mouse keys with modifiers work inconsistently across operating systems, this makes sure that modifiers are always
+            // applied to the mouse key that was pressed.
+            if (IS_MOUSE_KEYCODE(QK_MODS_GET_BASIC_KEYCODE(keycode))) {
+                if (record->event.pressed) {
+                    add_mods(QK_MODS_GET_MODS(keycode));
+                    send_keyboard_report();
+                    wait_ms(2);
+                    register_code(QK_MODS_GET_BASIC_KEYCODE(keycode));
+                    return false;
+                } else {
+                    wait_ms(2);
+                    del_mods(QK_MODS_GET_MODS(keycode));
+                }
+            }
+            break;
+
+        case DUAL_FUNC_0:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) {
+                    register_code16(KC_EQUAL);
+                } else {
+                unregister_code16(KC_EQUAL);
+                }
+            } else {
+                if (record->event.pressed) {
+                register_code16(KC_ESCAPE);
+                } else {
+                unregister_code16(KC_ESCAPE);
+                }
+            }
+            return false;
+        default:
+            return true;
+    }
+    return true;
+}
 
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
