@@ -26,8 +26,6 @@ enum dilemma_keymap_layers {
     LAYER_POINTER,
 };
 
-// Automatically enable sniping-mode on the pointer layer.
-#define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_LOWER // mouse control layer
 
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
@@ -84,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_LSFT, MT_CT_Z,    KC_X,    KC_C, MT_SF_V, LT_RA_B,    LT_RA_N, MT_SF_M, KC_COMM,  KC_DOT, MT_CTSL, KC_RSFT,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                         KC_LGUI, KC_LALT, MT_RALE, LT_LO_S,    LT_LO_S, MT_RALS, KC_LALT, KC_RGUI
+                         KC_LGUI, KC_LALT, MT_RALE, LT_LO_S,    LT_LO_S, MT_RALS, KC_BSLS, KC_RGUI
   //                    ╰───────────────────────────────────╯ ╰───────────────────────────────────╯
   ),
 
