@@ -70,6 +70,8 @@ enum dilemma_keymap_layers {
 
 #define FN_EQESC LT(9, KC_ESC)
 
+#define CAPS_LOCK_DOUBLE_TAP_TIMEOUT 600 // sensible default to simulate holding both shift keys to enable CAPS_LOCK on Neo
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
@@ -130,7 +132,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+bool     _simulate_shift_hold_active = false;
+uint16_t _simulate_shift_hold_timer = 0;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        static bool tapped = false;
+        static uint16_t tap_timer = 0;
+        // Toggle caps lock on shift double tap
+        if (keycode == KC_LSFT || keycode == KC_RSFT) {
+            if (tapped && !timer_expired(record->event.time, tap_timer)) {
+                // Key was double tapped withing tapping term.
+                // clear_mods(); // just in case
+                register_code(KC_LSFT);
+                register_code(KC_RSFT);
+                _simulate_shift_hold_active = true;
+                _simulate_shift_hold_timer = timer_read();
+                tapped = false;
+                return false;
+            }
+            tapped = true; // tapped once
+            tap_timer = record->event.time + TAPPING_TERM;
+        } else {
+            tapped = false;
+        }
+    }
     switch (keycode) {
         case QK_MODS ... QK_MODS_MAX:
             // Mouse keys with modifiers work inconsistently across operating systems, this makes sure that modifiers are always
@@ -150,24 +176,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case FN_EQESC:
-            if (record->tap.count > 0) {
+            // Send "=" when tapped, ESC when hold.
+            if (record->tap.count > 0) {    // key is being tapped
                 if (record->event.pressed) {
                     register_code16(KC_EQUAL);
                 } else {
-                unregister_code16(KC_EQUAL);
+                    unregister_code16(KC_EQUAL);
                 }
-            } else {
+            } else {                        // key is being held
                 if (record->event.pressed) {
-                register_code16(KC_ESCAPE);
+                    register_code16(KC_ESCAPE);
                 } else {
-                unregister_code16(KC_ESCAPE);
+                    unregister_code16(KC_ESCAPE);
                 }
             }
             return false;
+
         default:
             return true;
     }
     return true;
+}
+
+void matrix_scan_user(void) {
+    if (_simulate_shift_hold_active) {
+        if (timer_elapsed(_simulate_shift_hold_timer) > CAPS_LOCK_DOUBLE_TAP_TIMEOUT) {
+            unregister_code(KC_LSFT);
+            unregister_code(KC_RSFT);
+            _simulate_shift_hold_active = false;
+        }
+    }
 }
 
 #ifdef POINTING_DEVICE_ENABLE
