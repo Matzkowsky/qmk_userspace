@@ -34,3 +34,8 @@
 // ----- High-resolution scroll -----
 //#define DILEMMA_DRAGSCROLL_REVERSE_Y  // disabled as it only supports DRAGSCROLL modeS
 #define DILEMMA_DRAGSCROLL_DPI 80
+
+// Tri Layer
+#define TRI_LAYER_LOWER_LAYER 1
+#define TRI_LAYER_UPPER_LAYER 2
+#define TRI_LAYER_ADJUST_LAYER 3
