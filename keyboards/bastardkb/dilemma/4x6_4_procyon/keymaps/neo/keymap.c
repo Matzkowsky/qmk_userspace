@@ -33,6 +33,7 @@ enum dilemma_keymap_layers {
 #define MT_SF_V MT(MOD_LSFT, KC_V)
 #define MT_RALE MT(MOD_LALT | MOD_RALT, KC_ENT)
 #define LT_LO_S LT(1, KC_SPC)
+#define LT_RA_S LT(2, KC_SPC)
 #define LT_RA_B LT(2, KC_B)
 #define LT_RA_N LT(2, KC_N)
 #define MT_CTSL MT(MOD_LCTL | MOD_RCTL, KC_SLSH)
@@ -82,9 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_CAPS,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_LSFT, MT_CT_Z,    KC_X,    KC_C, MT_SF_V, LT_RA_B,    LT_RA_N, MT_SF_M, KC_COMM,  KC_DOT, MT_CTSL, KC_RSFT,
+       KC_LSFT, MT_CT_Z,    KC_X,    KC_C, MT_SF_V,    KC_B,       KC_N, MT_SF_M, KC_COMM,  KC_DOT, MT_CTSL, KC_RSFT,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                         KC_LGUI, KC_LALT, MT_RALE, LT_LO_S,    LT_LO_S, MT_RALS, KC_BSLS, KC_RGUI
+                         KC_LGUI, KC_LALT, MT_RALE, LT_LO_S,    LT_RA_S, MT_RALS, KC_BSLS, KC_RGUI
   //                    ╰───────────────────────────────────╯ ╰───────────────────────────────────╯
   ),
 
@@ -92,27 +93,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, MS_WHUP, MS_DRGS,   MS_UP, MS_SNIP, MS_WHDO,    XXXXXXX, MS_DPIR, MS_DPIF, MS_SNIR, MS_SNIF,  KC_F12,
+       XXXXXXX, MS_WHUP, MS_BTN4,  MS_UP,  MS_BTN5, MS_WHDO,    XXXXXXX, MS_BTN4, XXXXXXX, MS_BTN5, XXXXXXX,  KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, MS_WH_L, MS_LEFT, MS_DOWN, MS_RGHT, MS_WH_R,    XXXXXXX, MS_BTN1, MS_BTN2, MS_BTN3, XXXXXXX, XXXXXXX,
+       XXXXXXX, MS_WH_L, MS_LEFT, MS_DOWN, MS_RGHT, MS_WH_R,    XXXXXXX, MS_BTN1, MS_BTN2, MS_BTN3, MS_DPIR, MS_DPIF,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, MS_BTN4, MS_BTN3, MS_BTN2, MS_BTN1, MS_BTN5,    XXXXXXX, MS_BTN4, MS_BTN5, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, MS_BTN3, MS_BTN2, MS_BTN1, MS_DRGS,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MS_SNIR, MS_SNIF,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                         XXXXXXX, XXXXXXX, XXXXXXX, _______,    XXXXXXX, _______, XXXXXXX, XXXXXXX
+                         _______, _______, _______, XXXXXXX,    _______, _______, _______, _______
   //                    ╰───────────────────────────────────╯ ╰───────────────────────────────────╯
   ),
 
   [LAYER_RAISE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       QK_BOOT, XXXXXXX, BL_TOGG, BL_DOWN,   BL_UP, BL_STEP,    XXXXXXX, UG_VALD, UG_VALU, UG_TOGG, XXXXXXX, QK_BOOT,
+       _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX,    XXXXXXX, KC_PSCR, XXXXXXX, XXXXXXX, XXXXXXX, KC_EJCT,
+       UG_TOGG, KC_PGUP, KC_BSPC,   KC_UP,  KC_DEL, KC_PGDN,    KC_VOLU, KC_PSCR, XXXXXXX, XXXXXXX, KC_BRIU,  KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX,    XXXXXXX,KC_PASTE, KC_COPY,  KC_CUT, XXXXXXX, XXXXXXX,
+       UG_VALU, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,    KC_VOLD, KC_PASTE, KC_COPY,  KC_CUT, KC_BRID, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, KC_MPRV, KC_MSTP, KC_MPLY, KC_MNXT, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       UG_VALD, QK_GESC, KC_TAB,  KC_INS,   KC_ENT, KC_UNDO,    KC_MUTE, KC_MPLY, KC_MSTP, KC_MPRV, KC_MNXT, _______,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                         XXXXXXX, _______, _______, XXXXXXX,    _______, XXXXXXX, XXXXXXX, XXXXXXX
+                         _______, _______, _______, _______,    XXXXXXX, _______, _______, _______
   //                    ╰───────────────────────────────────╯ ╰───────────────────────────────────╯
   ),
 
@@ -211,9 +212,9 @@ void matrix_scan_user(void) {
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
 layer_state_t layer_state_set_user(layer_state_t state) {
+    dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
     // Activate tri-layer also when using LT layer switch
     state = update_tri_layer_state(state, LAYER_LOWER, LAYER_RAISE, LAYER_ADJUST);
-    dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
     return state;
 }
 #    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
