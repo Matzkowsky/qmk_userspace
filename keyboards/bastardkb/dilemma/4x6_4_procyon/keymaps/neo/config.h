@@ -35,6 +35,9 @@
 //#define DILEMMA_DRAGSCROLL_REVERSE_Y  // disabled as it only supports DRAGSCROLL modeS
 #define DILEMMA_DRAGSCROLL_DPI 80
 
+// Lighting settings
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_TYPING_HEATMAP
+
 // Tri Layer (uses default, no need to re-define)
 //#define TRI_LAYER_LOWER_LAYER 1
 //#define TRI_LAYER_UPPER_LAYER 2
