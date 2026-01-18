@@ -227,6 +227,55 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef RGB_MATRIX_ENABLE
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
 void rgb_matrix_update_pwm_buffers(void);
+
+static HSV _get_user_hsv_for_layer_index(uint8_t layer) {
+    switch (layer) {
+        case 1:
+            return (HSV){HSV_AZURE};
+        case 2:
+            return (HSV){HSV_CHARTREUSE};
+        case 3:
+            return (HSV){HSV_ORANGE};
+        case 4:
+            return (HSV){HSV_GOLDENROD};
+        case 5:
+            return (HSV){HSV_WHITE};
+        case 6:
+            return (HSV){HSV_TURQUOISE};
+        case 7:
+        default:
+            return (hsv_t){HSV_BLACK};
+            break;
+    };
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    const uint8_t layer = get_highest_layer(layer_state);
+    HSV hsv = _get_user_hsv_for_layer_index(layer);
+
+    if (layer > 0) {
+        // Set brightness to the configured interval brighter than current brightness, clamped to 255 (ie. uint8_t max value). This compensates for the dimmer appearance of the underglow LEDs.
+        hsv.v         = MIN(rgb_matrix_get_val() + LAYER_INDICATOR_BRIGHTNESS_INC, 255);
+    } else {
+        hsv           = (hsv_t){HSV_BLACK};
+    }
+    const RGB rgb = hsv_to_rgb(hsv);
+
+    for (int i = led_min; i < led_max; i++) {
+        rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+    }
+
+    // Set underglow LEDs to green if caps lock is enabled
+    if (host_keyboard_led_state().caps_lock) {
+        for (int i = led_min; i <= led_max; i++) {
+            if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
+                // set modifier-flagged LEDs to a pure a configured interval brighter than the current brightness, clamped to 255 (ie. uint8_t max value).
+                rgb_matrix_set_color(i, MIN(rgb_matrix_get_val() + CAPSLOCK_INDICATOR_BRIGHTNESS_INC, 0), 255, 16);
+            }
+        }
+    }
+    return false;
+}
 #endif // RGB_MATRIX_ENABLE
 
 #ifdef ENCODER_MAP_ENABLE

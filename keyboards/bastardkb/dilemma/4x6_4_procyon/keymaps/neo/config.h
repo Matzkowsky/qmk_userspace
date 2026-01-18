@@ -37,6 +37,9 @@
 
 // Lighting settings
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_TYPING_HEATMAP
+// Layer indicator brightness step size, same default as in dilemma.c
+#define LAYER_INDICATOR_BRIGHTNESS_INC 22
+#define CAPSLOCK_INDICATOR_BRIGHTNESS_INC 44
 
 // Tri Layer (uses default, no need to re-define)
 //#define TRI_LAYER_LOWER_LAYER 1
