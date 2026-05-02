@@ -24,6 +24,7 @@
 #define ENCODER_RESOLUTION 4
 
 #define TAPPING_TERM 185
+#define TAPPING_TERM_PER_KEY
 #define PERMISSIVE_HOLD
 
 // Automatically enable sniping-mode on the pointer layer.

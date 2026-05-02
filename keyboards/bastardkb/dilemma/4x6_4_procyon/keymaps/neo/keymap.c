@@ -140,13 +140,23 @@ uint16_t _simulate_shift_hold_timer = 0;
 // speed up bottom home-row shift keys a bit
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case MT(MOD_LSFT, KC_V):
+#ifdef DYNAMIC_TAPPING_TERM_ENABLE
+        case MT_SF_V:
             return g_tapping_term -20;
-        case MT(MOD_RSFT, KC_M):
+        case MT_SF_M:
             return g_tapping_term -20;
         default:
             return g_tapping_term;
     }
+#else
+        case MT_SF_V:
+            return TAPPING_TERM -20;
+        case MT_SF_M:
+            return TAPPING_TERM -20;
+        default:
+            return TAPPING_TERM;
+    }
+#endif
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
