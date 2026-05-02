@@ -39,6 +39,19 @@ enum dilemma_keymap_layers {
 #define MT_CTSL MT(MOD_LCTL | MOD_RCTL, KC_SLSH)
 #define MT_SF_M MT(MOD_LSFT | MOD_RSFT, KC_M)
 #define MT_RALS MT(MOD_LALT | MOD_RALT, KC_SPC)
+#define FN1_1 LT(0, KC_1)
+#define FN2_2 LT(0, KC_2)
+#define FN3_3 LT(0, KC_3)
+#define FN4_4 LT(0, KC_4)
+#define FN5_5 LT(0, KC_5)
+#define FN6_6 LT(0, KC_6)
+#define FN7_7 LT(0, KC_7)
+#define FN8_8 LT(0, KC_8)
+#define FN9_9 LT(0, KC_9)
+#define FN10_0 LT(0, KC_0)
+#define FN11_MIN LT(0, KC_MINS)
+#define FN12_LBRC LT(0, KC_LBRC)
+#define FN_EQESC LT(0, KC_EQUAL)
 
 #define MS_WHUP QK_MOUSE_WHEEL_UP   // Mouse wheel up
 #define MS_UP   QK_MOUSE_CURSOR_UP  // Mouse up
@@ -70,17 +83,15 @@ enum dilemma_keymap_layers {
 #    define SNIPING KC_NO
 #endif // !POINTING_DEVICE_ENABLE
 
-#define FN_EQESC LT(9, KC_ESC)
-
 #define CAPS_LOCK_DOUBLE_TAP_TIMEOUT 600 // sensible default to simulate holding both shift keys to enable CAPS_LOCK on Neo
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       FN_EQESC,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,
+       FN_EQESC,  FN1_1,   FN2_2,   FN3_3,   FN4_4,   FN5_5,      FN6_6,   FN7_7,   FN8_8,   FN9_9,  FN10_0,FN11_MIN,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC,
+       KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,FN12_LBRC,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_CAPS,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -136,6 +147,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool     _simulate_shift_hold_active = false;
 uint16_t _simulate_shift_hold_timer = 0;
+
+// Helper for implementing tap vs. long-press keys. Given a tap-hold
+// key event, replaces the hold function with `long_press_keycode`.
+static bool process_tap_or_long_press_key(
+    keyrecord_t* record, uint16_t long_press_keycode) {
+  if (record->tap.count == 0) {  // Key is being held.
+    if (record->event.pressed) {
+      tap_code16(long_press_keycode);
+    }
+    return false;  // Skip default handling.
+  }
+  return true;  // Continue default handling.
+}
 
 // speed up bottom home-row shift keys a bit
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -199,23 +223,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        case FN_EQESC:
-            // Send "=" when tapped, ESC when hold.
-            if (record->tap.count > 0) {    // key is being tapped
-                if (record->event.pressed) {
-                    register_code16(KC_EQUAL);
-                } else {
-                    unregister_code16(KC_EQUAL);
-                }
-            } else {                        // key is being held
-                if (record->event.pressed) {
-                    register_code16(KC_ESCAPE);
-                } else {
-                    unregister_code16(KC_ESCAPE);
-                }
-            }
-            return false;
-
+        case FN1_1: // 1 on tap, F1 on long press
+            return process_tap_or_long_press_key(record, KC_F1);
+        case FN2_2: // 2 on tap, F2 on long press
+            return process_tap_or_long_press_key(record, KC_F2);
+        case FN3_3: // 3 on tap, F. on long press
+            return process_tap_or_long_press_key(record, KC_F3);
+        case FN4_4: // 4 on tap, F4 on long press
+            return process_tap_or_long_press_key(record, KC_F4);
+        case FN5_5: // 5 on tap, F5 on long press
+            return process_tap_or_long_press_key(record, KC_F5);
+        case FN6_6: // 6 on tap, F6 on long press
+            return process_tap_or_long_press_key(record, KC_F6);
+        case FN7_7: // 7 on tap, F7 on long press
+            return process_tap_or_long_press_key(record, KC_F7);
+        case FN8_8: // 8 on tap, F8 on long press
+            return process_tap_or_long_press_key(record, KC_F8);
+        case FN9_9: // 9 on tap, F9 on long press
+            return process_tap_or_long_press_key(record, KC_F9);
+        case FN10_0: // 0 on tap, F10 on long press
+            return process_tap_or_long_press_key(record, KC_F10);
+        case FN11_MIN: // - on tap, F11 on long press
+            return process_tap_or_long_press_key(record, KC_F11);
+        case FN12_LBRC: // [ on tap, F12 on long press
+            return process_tap_or_long_press_key(record, KC_F12);
+        case FN_EQESC: // Send "=" when tapped, ESC on long press
+            return process_tap_or_long_press_key(record, KC_ESC);
         default:
             return true;
     }
