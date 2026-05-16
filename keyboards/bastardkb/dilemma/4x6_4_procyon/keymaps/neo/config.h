@@ -30,11 +30,11 @@
 // Automatically enable sniping-mode on the pointer layer.
 #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_LOWER // mouse control layer
 // ----- Touchpad Configuration -----
-#define DILEMMA_MINIMUM_DEFAULT_DPI 350
-#define DILEMMA_DEFAULT_DPI_CONFIG_STEP 150
+#define DILEMMA_MINIMUM_DEFAULT_DPI 320     // default 400
+#define DILEMMA_DEFAULT_DPI_CONFIG_STEP 120 // default 200
 // ----- High-resolution scroll -----
-//#define DILEMMA_DRAGSCROLL_REVERSE_Y  // disabled as it only supports DRAGSCROLL modeS
-#define DILEMMA_DRAGSCROLL_DPI 80
+//#define DILEMMA_DRAGSCROLL_REVERSE_Y      // disabled as it only supports DRAGSCROLL mode
+#define DILEMMA_DRAGSCROLL_DPI 70           // default 100
 
 // Lighting settings
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_TYPING_HEATMAP
